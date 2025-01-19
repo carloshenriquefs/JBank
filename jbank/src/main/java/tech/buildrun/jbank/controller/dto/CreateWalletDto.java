@@ -1,4 +1,4 @@
-package tech.buildrun.jbank.controller;
+package tech.buildrun.jbank.controller.dto;
 
 public record CreateWalletDto(String cpf,
                               String email,

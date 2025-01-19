@@ -1,7 +1,7 @@
 package tech.buildrun.jbank.service;
 
 import org.springframework.stereotype.Service;
-import tech.buildrun.jbank.controller.CreateWalletDto;
+import tech.buildrun.jbank.controller.dto.CreateWalletDto;
 import tech.buildrun.jbank.entities.Wallet;
 import tech.buildrun.jbank.exception.WalletDataAlreadyExistsException;
 import tech.buildrun.jbank.repository.WalletRepository;
