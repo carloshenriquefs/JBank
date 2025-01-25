@@ -1,22 +1,30 @@
 package tech.buildrun.jbank.service;
 
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 import tech.buildrun.jbank.controller.dto.CreateWalletDto;
+import tech.buildrun.jbank.controller.dto.DepositMoneyDto;
+import tech.buildrun.jbank.entities.Deposit;
 import tech.buildrun.jbank.entities.Wallet;
 import tech.buildrun.jbank.exception.DeleteWalletException;
 import tech.buildrun.jbank.exception.WalletDataAlreadyExistsException;
+import tech.buildrun.jbank.exception.WalletNotFoundException;
+import tech.buildrun.jbank.repository.DepositRepository;
 import tech.buildrun.jbank.repository.WalletRepository;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Service
 public class WalletService {
 
     private final WalletRepository walletRepository;
+    private final DepositRepository depositRepository;
 
-    public WalletService(WalletRepository walletRepository) {
+    public WalletService(WalletRepository walletRepository, DepositRepository depositRepository) {
         this.walletRepository = walletRepository;
+        this.depositRepository = depositRepository;
     }
 
     public Wallet createWallet(CreateWalletDto dto) {
@@ -50,5 +58,26 @@ public class WalletService {
         }
 
         return wallet.isPresent();
+    }
+
+    @Transactional
+    public void depositMoney(UUID walletId,
+                             DepositMoneyDto dto,
+                             String ipAddress) {
+
+        var wallet = walletRepository.findById(walletId)
+                .orElseThrow(() -> new WalletNotFoundException("there is no wallet with this id"));
+
+        var deposit = new Deposit();
+        deposit.setWallet(wallet);
+        deposit.setDepositValue(dto.value());
+        deposit.setDepositDateTime(LocalDateTime.now());
+        deposit.setIpAddress(ipAddress);
+
+        depositRepository.save(deposit);
+
+        wallet.setBalance(wallet.getBalance().add(dto.value()));
+
+        walletRepository.save(wallet);
     }
 }
