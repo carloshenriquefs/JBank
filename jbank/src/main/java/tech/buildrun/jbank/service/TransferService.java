@@ -39,8 +39,7 @@ public class TransferService {
         updateWallets(dto, sender, receiver);
 
         persistTransfer(dto, receiver, sender);
-
-
+        
     }
 
     private void updateWallets(TransferMoneyDto dto, Wallet sender, Wallet receiver) {

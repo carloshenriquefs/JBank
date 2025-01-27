@@ -63,7 +63,7 @@ public class WalletController {
     @GetMapping("/{walletId}/statements")
     public ResponseEntity<StatementDto> getStatements(@PathVariable("walletId") UUID walletId,
                                                       @RequestParam(name = "page", defaultValue = "0") Integer page,
-                                                      @RequestParam(name = "pageSize", defaultValue = "0") Integer pageSize) {
+                                                      @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize) {
 
         var statement = walletService.getStatements(walletId, page,  pageSize);
 
