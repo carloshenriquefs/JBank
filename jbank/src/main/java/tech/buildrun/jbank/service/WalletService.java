@@ -1,9 +1,12 @@
 package tech.buildrun.jbank.service;
 
 import jakarta.transaction.Transactional;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import tech.buildrun.jbank.controller.dto.CreateWalletDto;
 import tech.buildrun.jbank.controller.dto.DepositMoneyDto;
+import tech.buildrun.jbank.controller.dto.StatementDto;
 import tech.buildrun.jbank.entities.Deposit;
 import tech.buildrun.jbank.entities.Wallet;
 import tech.buildrun.jbank.exception.DeleteWalletException;
@@ -79,5 +82,17 @@ public class WalletService {
         wallet.setBalance(wallet.getBalance().add(dto.value()));
 
         walletRepository.save(wallet);
+    }
+
+    public StatementDto getStatements(UUID walletId, Integer page, Integer pageSize) {
+
+        var wallet = walletRepository.findById(walletId)
+                .orElseThrow(() -> new WalletNotFoundException("there is not wallet with this id"));
+
+        var pageRequest = PageRequest.of(page, pageSize, Sort.Direction.DESC, "statement_date_time");
+
+        walletRepository.findStatements(walletId, pageRequest);
+
+        return null;
     }
 }
