@@ -3,6 +3,22 @@
 - Sistema de banking usando Spring Boot;
 - Sistema permitira a criação e gestão de carteiras bancárias, incluindo a realização de depósitos, transferências e consultas de extratos.
 
+## 📂 - Estrutura de Pastas:
+```
+├── jbank
+│   ├── controller
+|   |   ├── dto
+│   ├── entities
+│   ├── exception
+|   |   ├── dto
+│   ├── filter
+│   ├── interceptors
+│   ├── repository
+|   |   ├── dto
+│   ├── service
+├── test
+│   ├── jbank
+```
 
 ## 📃- Diagrama Funcional:
 
